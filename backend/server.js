@@ -3,11 +3,13 @@ dotenv.config()
 const express = require('express')
 const mongoose = require('mongoose')
 const userRoutes = require('./routes/userRoutes')
+const mealRoutes = require('./routes/mealRoutes')
 
 const app = express()
 
 app.use(express.json())
 app.use('/api/users', userRoutes)
+app.use('/api/meals', mealRoutes)
 
 mongoose.connect(process.env.MONGODB_URI)
 .then(() => console.log('Connected to MongoDB!'))
