@@ -31,7 +31,7 @@ const userSchema = mongoose.Schema({
   },
   dailyCalorieGoal: {
     type: Number,
-    required: true
+    default: 0
   },
   gender: {
     type: String,
