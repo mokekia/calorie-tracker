@@ -22,7 +22,7 @@ const userSchema = mongoose.Schema({
   activity_level: {
     type: String,
     required: true,
-    enum: ["sedentary", "lightly_active", "moderatly_active","highly_active"]
+    enum: ["sedentary", "lightly_active", "moderately_active","highly_active"]
   },
   goal: {
     type: Number,
@@ -32,6 +32,11 @@ const userSchema = mongoose.Schema({
   dailyCalorieGoal: {
     type: Number,
     required: true
+  },
+  gender: {
+    type: String,
+    required: true,
+    enum: ["male", "female"]
   }
 })
 
