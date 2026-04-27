@@ -7,7 +7,7 @@ const App = () => {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const response = await fetch('http://localhost:3000/api/users/69ee229b39697d4a79f02031')
+      const response = await fetch('http://localhost:3000/api/users/69ef85687f3b2019d2b3235c')
       const data = await response.json()
       setUser(data)
       console.log(data)

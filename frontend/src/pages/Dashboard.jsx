@@ -8,10 +8,25 @@ const Dashboard = ({ user }) => {
   const navigate = useNavigate()
   const [meals, setMeals] = useState([])
   const location = useLocation()
+  const [selectedMealId, setSelectedMealId] = useState(null)
+  const [foodEntries, setFoodEntries] = useState([])
+
+  useEffect(() => {
+    if (!selectedMealId) return
+    const fetchFoodEntries = async () => {
+      const response = await fetch(`http://localhost:3000/api/foodEntries/${selectedMealId}`)
+      const data = await response.json()
+      setFoodEntries(data)
+      console.log(foodEntries)
+    } 
+    fetchFoodEntries()
+  }, [selectedMealId])
+
+
   useEffect(() => {
     const fetchMeals = async () => {
       console.log('fetching meals')
-      const response = await fetch('http://localhost:3000/api/meals/69ee229b39697d4a79f02031')
+      const response = await fetch('http://localhost:3000/api/meals/69ef85687f3b2019d2b3235c')
       const data = await response.json()
       setMeals(data)
       console.log(data)
@@ -40,9 +55,16 @@ const Dashboard = ({ user }) => {
       
       <p>Calories left: {caloriesLeft}</p>
       {meals.map((meal) => (
-       <div key={meal._id}>
+       <div key={meal._id} onClick={() => setSelectedMealId(meal._id)}>
         <p>{meal.meal_type}: {meal.total_calories}</p>
         <button onClick={() => navigate('/AddMeal', {state: {mealId: meal._id}})}>Add Food</button>
+        {meal._id === selectedMealId && (
+          <div>
+            {foodEntries.map((entry) => (
+              <p key={entry._id}>{entry.name}: {entry.calculatedCalories} kcal left</p>
+            ))}
+          </div>  
+        )}
        </div> 
     ))}
     </div>
