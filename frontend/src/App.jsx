@@ -1,6 +1,8 @@
+import { BrowserRouter, Routes, Route} from 'react-router-dom'
+import Dashboard from './pages/Dashboard'
+import AddMeal from './pages/AddMeal'
 import { useState, useEffect } from 'react'
 const App = () => {
-  const [calories, setCalories] = useState(0)
   const [user, setUser] = useState(null)
 
   useEffect(() => {
@@ -14,13 +16,12 @@ const App = () => {
     }, [])
 
   return (
-    <div>
-      <h1>Calorie Tracker</h1>
-      <p>Kalorier: {calories}</p>
-      <button onClick={() => setCalories(calories + 100)}>
-        Add 100 calories
-      </button>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Dashboard user={user}/>}/>
+        <Route path="/AddMeal" element={<AddMeal/>}/>
+      </Routes>
+    </BrowserRouter>
   )
 }
 
