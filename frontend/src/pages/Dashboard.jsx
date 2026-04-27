@@ -34,10 +34,25 @@ const Dashboard = ({ user }) => {
     fetchMeals()
   }, [location])
 
+
   if (!user) return <p>Loading...</p>
   if (!meals) return <p>Loading...</p>
   const totalEaten = meals.reduce((sum, meal) => sum + meal.total_calories, 0)
   const caloriesLeft = user.dailyCalorieGoal - totalEaten
+
+  const handleMealSelect = async (userId, meal_type, date) => {
+    const response = await fetch('http://localhost:3000/api/meals/findOrCreate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        userId: userId,
+        meal_type: meal_type,
+        date: date
+      })
+    })
+    const data = await response.json()
+    navigate('/AddMeal', {state: { mealId: data._id }})
+  }
   return (
     <div>
       <h1>Dashboard {user.name}</h1>
@@ -57,16 +72,20 @@ const Dashboard = ({ user }) => {
       {meals.map((meal) => (
        <div key={meal._id} onClick={() => setSelectedMealId(meal._id)}>
         <p>{meal.meal_type}: {meal.total_calories}</p>
-        <button onClick={() => navigate('/AddMeal', {state: {mealId: meal._id}})}>Add Food</button>
-        {meal._id === selectedMealId && (
+        {meal._id === selectedMealId && ( // MODAL
           <div>
             {foodEntries.map((entry) => (
               <p key={entry._id}>{entry.name}: {entry.calculatedCalories} kcal left</p>
             ))}
           </div>  
         )}
-       </div> 
+       </div>
+        
     ))}
+      <button onClick={() => handleMealSelect(user._id, 'breakfast', new Date().toISOString().split('T')[0])}>Add Breakfast</button>
+      <button onClick={() => handleMealSelect(user._id, 'lunch', new Date().toISOString().split('T')[0])}>Add Lunch</button>
+      <button onClick={() => handleMealSelect(user._id, 'snacks', new Date().toISOString().split('T')[0])}>Add Snacks</button>
+      <button onClick={() => handleMealSelect(user._id, 'dinner', new Date().toISOString().split('T')[0])}>Add Dinner</button>
     </div>
   )
 }

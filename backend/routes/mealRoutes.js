@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const mealController = require('../controllers/mealController')
 
+router.post('/findOrCreate', mealController.findOrCreateMeal)
 router.post('/', mealController.createMeal)
 router.put('/:id', mealController.updateMeal)
 router.get('/:userId', mealController.getAllMealsForUser)

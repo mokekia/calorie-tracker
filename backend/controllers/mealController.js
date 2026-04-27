@@ -9,6 +9,20 @@ const createMeal = async (req, res) => {
   }
 }
 
+const findOrCreateMeal = async (req, res) => {
+  try {
+    const {userId, meal_type, date} = req.body
+    const meal = await Meal.findOneAndUpdate(
+      {userId, meal_type, date}, // search for data
+      { $setOnInsert: { userId, meal_type, date, total_calories: 0 } }, // create if it does not exist
+      { upsert: true, new: true } // create if it does not exist
+    )
+    res.status(200).json(meal)
+  } catch (error) {
+    res.status(500).json({message: error.message})   
+  }
+}
+
 const updateMeal = async (req, res) => {
   try {
     const meal = await Meal.findByIdAndUpdate(req.params.id, req.body)
@@ -44,4 +58,4 @@ const deleteMeal = async (req, res) => {
   }
 } 
 
-module.exports = {createMeal, updateMeal, getAllMealsForUser, getAllMealsByDateForUser, deleteMeal}
+module.exports = {createMeal, findOrCreateMeal, updateMeal, getAllMealsForUser, getAllMealsByDateForUser, deleteMeal}
