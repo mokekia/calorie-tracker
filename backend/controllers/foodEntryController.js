@@ -29,6 +29,8 @@ const getAllFoodEntriesForMeal = async (req, res) => {
 
 const deleteFoodEntry = async (req, res) => {
   try {
+    const foodEntryToDelete = await FoodEntry.findById(req.params.id)
+    await Meal.findByIdAndUpdate(foodEntryToDelete.mealId, {$inc: { total_calories: -foodEntryToDelete.calculatedCalories } })
     const foodEntry = await FoodEntry.findByIdAndDelete(req.params.id)
     res.status(200).json(foodEntry)
   } catch (error) {

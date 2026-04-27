@@ -23,14 +23,14 @@ const Dashboard = ({ user }) => {
   }, [selectedMealId])
 
 
-  useEffect(() => {
     const fetchMeals = async () => {
       console.log('fetching meals')
       const response = await fetch('http://localhost:3000/api/meals/69ef85687f3b2019d2b3235c')
       const data = await response.json()
       setMeals(data)
       console.log(data)
-    }
+    }  
+  useEffect(() => {
     fetchMeals()
   }, [location])
 
@@ -53,6 +53,15 @@ const Dashboard = ({ user }) => {
     const data = await response.json()
     navigate('/AddMeal', {state: { mealId: data._id }})
   }
+
+  const handleDeleteFoodEntry = async (id) => {
+    const data = await fetch(`http://localhost:3000/api/foodEntries/${id}`, {
+      method: 'DELETE'
+    })
+    setFoodEntries(foodEntries.filter(entry => entry._id !== id))
+    fetchMeals()
+  }
+
   return (
     <div>
       <h1>Dashboard {user.name}</h1>
@@ -72,10 +81,12 @@ const Dashboard = ({ user }) => {
       {meals.map((meal) => (
        <div key={meal._id} onClick={() => setSelectedMealId(meal._id)}>
         <p>{meal.meal_type}: {meal.total_calories}</p>
-        {meal._id === selectedMealId && ( // MODAL
+        {meal._id === selectedMealId && ( 
           <div>
             {foodEntries.map((entry) => (
-              <p key={entry._id}>{entry.name}: {entry.calculatedCalories} kcal left</p>
+              <p key={entry._id}>{entry.name}: {entry.calculatedCalories} kcal left
+                <button onClick={() => handleDeleteFoodEntry(entry._id)}>Delete</button>
+              </p>
             ))}
           </div>  
         )}
