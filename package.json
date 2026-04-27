@@ -1,0 +1,25 @@
+{
+  "name": "calorie-tracker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "concurrently \"npm run dev --prefix frontend\" \"npm start --prefix backend\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mokekia/calorie-tracker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/mokekia/calorie-tracker/issues"
+  },
+  "homepage": "https://github.com/mokekia/calorie-tracker#readme",
+  "dependencies": {
+    "concurrently": "^9.2.1"
+  }
+}

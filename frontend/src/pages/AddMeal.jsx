@@ -78,6 +78,8 @@ const AddMeal = () => {
           <button onClick={async () => {await handleQuickAdd(); setIsModalOpen(false)}}>Quick Add</button>
         </div>
       )}
+      <button onClick={() => navigate('/')}>Back to Dashboard</button>
+
     </div>
     
   )
