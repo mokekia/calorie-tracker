@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { CircularProgressbar, buildStyles } from 'react-circular-progressbar'
+import 'react-circular-progressbar/dist/styles.css'
 const Dashboard = ({ user }) => {
   console.log(user)
   const navigate = useNavigate()
@@ -17,9 +19,24 @@ const Dashboard = ({ user }) => {
 
   if (!user) return <p>Loading...</p>
   if (!meals) return <p>Loading...</p>
+  const totalEaten = meals.reduce((sum, meal) => sum + meal.total_calories, 0)
+  const caloriesLeft = user.dailyCalorieGoal - totalEaten
   return (
     <div>
       <h1>Dashboard {user.name}</h1>
+      
+      <div style={{width: '200px'}}>
+        <CircularProgressbar
+          value={totalEaten}
+          maxValue={user.dailyCalorieGoal}
+          text={`${caloriesLeft} kcal left`}
+          styles={buildStyles({
+            textSize: '12px'
+          })}
+        />  
+      </div>
+      
+      <p>Calories left: {caloriesLeft}</p>
       {meals.map((meal) => (
        <div key={meal._id}>
         <p>{meal.meal_type}: {meal.total_calories}</p>
