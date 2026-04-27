@@ -4,6 +4,7 @@ const Dashboard = ({ user }) => {
   console.log(user)
   const navigate = useNavigate()
   const [meals, setMeals] = useState([])
+  
   useEffect(() => {
     const fetchMeals = async () => {
       const response = await fetch('http://localhost:3000/api/meals/69ee229b39697d4a79f02031')
