@@ -1,8 +1,10 @@
 const FoodEntry = require('../models/foodEntry')
+const Meal = require('../models/meal')
 
 const createFoodEntry = async (req, res) => {
   try {
     const foodEntry = await FoodEntry.create(req.body)
+    await Meal.findByIdAndUpdate(req.body.mealId, {$inc : {total_calories: req.body.calculatedCalories} })
     res.status(201).json(foodEntry)
   } catch (error) {
     res.status(400).json({message: error.message})  
