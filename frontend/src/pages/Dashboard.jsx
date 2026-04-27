@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
 const Dashboard = ({ user }) => {
   console.log(user)
+  const navigate = useNavigate()
   const [meals, setMeals] = useState([])
   useEffect(() => {
     const fetchMeals = async () => {
@@ -18,8 +20,11 @@ const Dashboard = ({ user }) => {
     <div>
       <h1>Dashboard {user.name}</h1>
       {meals.map((meal) => (
-        <p key={meal._id}>{meal.meal_type}</p>
-      ))}
+       <div key={meal._id}>
+        <p>{meal.meal_type}: {meal.total_calories}</p>
+        <button onClick={() => navigate('/AddMeal', {state: {mealId: meal._id}})}>Add Food</button>
+       </div> 
+    ))}
     </div>
   )
 }
